@@ -10,6 +10,12 @@ The "pydropx" module is a  simple dropbox wrapper for uploading files and folder
 
 Required config dictionary
 
+example of configs:
+
+conf = {'dropbox_app_key' : "yourket",
+'dropbox_app_secret' : "appsecret",
+'dropbox_access_token' : "accesstoken"}
+
 """
 
 import dropbox
@@ -17,12 +23,7 @@ import os
 
 
 
-def dropbox_api(conf):
-        '''Returns connection to dropbox api'''
-        return dropbox.client.DropboxClient(conf['dropbox_access_token'])
-
-
-def upload_file(source, dest, client=dropbox_api(conf)):
+def upload_file(source, dest,configs ):
 
         """uploads a file to a specific destination on dropbox
 
@@ -31,10 +32,18 @@ def upload_file(source, dest, client=dropbox_api(conf)):
         @param dropbox_conn, connection to dropbox api
         """
 
+        # defining a client:
+        def dropbox_api(conf):
+        '''Returns connection to dropbox api'''
+        return dropbox.client.DropboxClient(conf['dropbox_access_token'])
+        # opening a client:
+        client=dropbox_api(configs)
+        # calling the file to be upload:
         f = open(source, 'rb')
+        # sending file via client
         client.put_file(dest, f)
 
-def upload_directory(source, dest, client=dropbox_api(conf)):
+def upload_directory(source, dest, configs):
         '''Uploads all files in a directory to a given directory on dropbox.
         This retains the same file structure present locally under the new destination folder/.
         Eg. source/dir/file.txt would get sent to dest/dir/file.txt
@@ -44,6 +53,13 @@ def upload_directory(source, dest, client=dropbox_api(conf)):
         @param dropbox_conn, connection to dropbox api
         '''
 
+        # defining a client:
+        def dropbox_api(conf):
+        '''Returns connection to dropbox api'''
+
+         # opening a client:
+        client=dropbox_api(configs)
+        # going over the folder and uplaoding all files:
         for f in os.walk(source):
                 for i in f[2]:
                         source_file = os.path.join(f[0], i)
