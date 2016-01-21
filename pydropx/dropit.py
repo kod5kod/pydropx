@@ -25,43 +25,43 @@ import os
 
 def upload_file(source, dest,configs ):
 
-        """uploads a file to a specific destination on dropbox
+    """uploads a file to a specific destination on dropbox
 
-        @param str, path to file locally
-        @param str, path to destination on dropbox
-        @param dropbox_conn, connection to dropbox api
-        """
+    @param str, path to file locally
+    @param str, path to destination on dropbox
+    @param dropbox_conn, connection to dropbox api
+    """
 
-        # defining a client:
-        def dropbox_api(conf):
+    # defining a client:
+    def dropbox_api(conf):
         '''Returns connection to dropbox api'''
         return dropbox.client.DropboxClient(conf['dropbox_access_token'])
-        # opening a client:
-        client=dropbox_api(configs)
-        # calling the file to be upload:
-        f = open(source, 'rb')
-        # sending file via client
-        client.put_file(dest, f)
+    # opening a client:
+    client=dropbox_api(configs)
+    # calling the file to be upload:
+    f = open(source, 'rb')
+    # sending file via client
+    client.put_file(dest, f)
 
 def upload_directory(source, dest, configs):
-        '''Uploads all files in a directory to a given directory on dropbox.
-        This retains the same file structure present locally under the new destination folder/.
-        Eg. source/dir/file.txt would get sent to dest/dir/file.txt
+    '''Uploads all files in a directory to a given directory on dropbox.
+    This retains the same file structure present locally under the new destination folder/.
+    Eg. source/dir/file.txt would get sent to dest/dir/file.txt
 
-        @param str, path to local dest
-        @param str, path to destination on dropbox
-        @param dropbox_conn, connection to dropbox api
-        '''
+    @param str, path to local dest
+    @param str, path to destination on dropbox
+    @param dropbox_conn, connection to dropbox api
+    '''
 
-        # defining a client:
-        def dropbox_api(conf):
+    # defining a client:
+    def dropbox_api(conf):
         '''Returns connection to dropbox api'''
-
-         # opening a client:
-        client=dropbox_api(configs)
-        # going over the folder and uplaoding all files:
-        for f in os.walk(source):
-                for i in f[2]:
-                        source_file = os.path.join(f[0], i)
-                        print dest+'/'+source_file[len(source):]
-                        upload_file(source_file,dest+'/'+source_file[len(source):],client=client)
+        return dropbox.client.DropboxClient(conf['dropbox_access_token'])
+     # opening a client:
+    client=dropbox_api(configs)
+    # going over the folder and uplaoding all files:
+    for f in os.walk(source):
+        for i in f[2]:
+            source_file = os.path.join(f[0], i)
+            print dest+'/'+source_file[len(source):]
+            upload_file(source_file,dest+'/'+source_file[len(source):],client=client)
