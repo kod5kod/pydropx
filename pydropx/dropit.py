@@ -64,4 +64,4 @@ def upload_directory(source, dest, configs):
         for i in f[2]:
             source_file = os.path.join(f[0], i)
             print dest+'/'+source_file[len(source):]
-            upload_file(source_file,dest+'/'+source_file[len(source):],client=client)
+            upload_file(source_file,dest+'/'+source_file[len(source):],configs)
